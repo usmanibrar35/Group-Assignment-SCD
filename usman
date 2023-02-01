@@ -1,0 +1,89 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Hangman extends JFrame implements ActionListener {
+    private JTextField guessField;
+    private JLabel resultLabel, hangmanLabel;
+    private String wordToGuess;
+    private int incorrectGuesses;
+    private String incorrectLetters;
+    private JButton guessButton;
+
+    public Hangman() {
+        // Set up the window
+        setTitle("Hangman");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setLayout(new FlowLayout());
+
+        // Set up the guess field
+        guessField = new JTextField(10);
+        guessField.addActionListener(this);
+        add(guessField);
+
+        // Set up the guess button
+        guessButton = new JButton("Guess");
+        guessButton.addActionListener(this);
+        add(guessButton);
+
+        // Set up the result label
+        resultLabel = new JLabel("Enter your guess and press the button or the enter key.");
+        add(resultLabel);
+
+        // Set up the hangman label
+        hangmanLabel = new JLabel();
+        add(hangmanLabel);
+
+        // Pick a random word to guess
+        wordToGuess = "hangman";
+        incorrectGuesses = 0;
+        incorrectLetters = "";
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String guess = guessField.getText();
+
+        if (wordToGuess.contains(guess)) {
+            resultLabel.setText("Correct! Keep going.");
+        } else {
+            resultLabel.setText("Incorrect. Try again.");
+            incorrectGuesses++;
+            incorrectLetters += guess + " ";
+        }
+
+        switch (incorrectGuesses) {
+            case 0:
+                hangmanLabel.setText("");
+                break;
+            case 1:
+                hangmanLabel.setText("O");
+                break;
+            case 2:
+                hangmanLabel.setText("O\n|");
+                break;
+            case 3:
+                hangmanLabel.setText("O\n|\n/");
+                break;
+            case 4:
+                hangmanLabel.setText("O\n|\n/\n\\");
+                break;
+            case 5:
+                hangmanLabel.setText("O\n|\n/\n\\\n/");
+                break;
+            case 6:
+                hangmanLabel.setText("O\n|\n/\n\\\n/\n\\");
+                break;
+            default:
+                hangmanLabel.setText("You lost. The word was " + wordToGuess + ".");
+                break;
+        }
+
+        guessField.setText("");
+    }
+
+    public static void main(String[] args) {
+        Hangman hangman = new Hangman();
+        hangman.setVisible(true);
+    }
+}
